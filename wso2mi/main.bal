@@ -1,8 +1,19 @@
 import ballerina/http;
 
+// HTTP client to call Encryptbased64 service
+http:Client encryptClient = check new ("http://localhost:9091");
+
 listener http:Listener httpDefaultListener = http:getDefaultListener();
 
-service /GetPayload on httpDefaultListener {
+service /GetInfo on httpDefaultListener {
+    resource function post GetInfo(@http:Payload PayloadData payload) returns PayloadData|error {
+        // Call Encryptbased64 service
+        PayloadData encryptedPayload = check encryptClient->post(path = "/Encryptbased64/Encryptbased64", message = payload);
+        return encryptedPayload;
+    }
+}
+
+service /Encryptbased64 on new http:Listener(9091) {
     resource function post Encryptbased64(@http:Payload PayloadData payload) returns PayloadData|error {
         // Encode original usuario and senha to base64
         byte[] usuarioBytes = payload.pessoa.usuario.toBytes();
