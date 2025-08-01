@@ -1,0 +1,7 @@
+[package]
+org = "Lucas"
+name = "wso2mi"
+version = "0.1.0"
+
+[build-options]
+sticky = true
