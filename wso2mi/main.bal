@@ -3,14 +3,14 @@ import ballerina/http;
 listener http:Listener httpDefaultListener = http:getDefaultListener();
 
 service /GetPayload on httpDefaultListener {
-    resource function post GetPayload(@http:Payload PayloadData payload) returns PayloadData|error {
+    resource function post Encryptbased64(@http:Payload PayloadData payload) returns PayloadData|error {
         // Encode original usuario and senha to base64
         byte[] usuarioBytes = payload.pessoa.usuario.toBytes();
         string encodedUsuario = usuarioBytes.toBase64();
-        
+
         byte[] senhaBytes = payload.pessoa.senha.toBytes();
         string encodedSenha = senhaBytes.toBase64();
-        
+
         // Create a modified copy of the payload
         PayloadData modifiedPayload = {
             pessoa: {
@@ -27,7 +27,7 @@ service /GetPayload on httpDefaultListener {
                 }
             }
         };
-        
+
         return modifiedPayload;
     }
 }
